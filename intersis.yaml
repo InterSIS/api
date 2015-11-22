@@ -149,12 +149,12 @@ paths:
             type: string
           - in: formData
             name: short_description
-            description: The guardians given name(s)
+            description: The course's short description
             required: true
             type: string
           - in: formData
             name: long_description
-            description: The guardian's email address
+            description: The course's long description.
             required: true
             type: string
         responses:
@@ -215,19 +215,19 @@ paths:
           type: string
         - in: formData
           name: short_description
-          description: The guardians given name(s)
+          description: The course's short description
           required: false
           type: string
         - in: formData
           name: long_description
-          description: The guardian's email address
+          description: The course's long description
           required: false
           type: string
       responses:
         200:
-          description: Successfully udpated - The guardian object
+          description: Successfully udpated - The course object
           schema:
-            $ref: '#/definitions/Guardian'
+            $ref: '#/definitions/Course'
         404:
           description: Unrecognized ID
           schema:
@@ -251,7 +251,7 @@ paths:
           schema:
           type: array
           items:
-            $ref: "#/definitions/Course"
+            $ref: '#/definitions/Course'
         404:
           description: Unrecognized ID
           schema:
