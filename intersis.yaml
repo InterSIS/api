@@ -501,7 +501,7 @@ paths:
           schema:
             $ref: '#/definitions/Student'
 
-  /student/{id}:
+  /students/{id}:
     parameters:
       - $ref: '#/parameters/id'
     get:
@@ -509,7 +509,7 @@ paths:
         - oauth:
           - read
       tags:
-        - student
+        - students
       description: Get basic information about a student.
       responses:
         200:
@@ -557,7 +557,7 @@ paths:
         - oauth:
           - read-write
       tags:
-        - student
+        - students
       responses:
         200:
           description: The student object
@@ -565,7 +565,7 @@ paths:
             $ref: '#/definitions/Student'
     delete:
       tags:
-        - student
+        - students
       summary: Deletes a student
       description: ""
       operationId: deleteStudent
