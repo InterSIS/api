@@ -43,6 +43,7 @@ securityDefinitions:
         not including student names or demographic information.
       read-student-names: read any student names or profile names on the user's behalf
       read-student-profile-names: read any student names on the user's behalf
+      read-client: read user details about the client
   key:
     type: apiKey
     in: query
@@ -54,6 +55,7 @@ security:
     - read-rostering
     - read-student-names
     - read-student-profile-names
+    - read-client
   - key: []
 
 ################################################################################
