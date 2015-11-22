@@ -576,6 +576,71 @@ paths:
         - oauth:
           - read-write
 
+  /users:
+    operationId: identifyUser
+    get:
+      security:
+        - oauth:
+          - read-write
+          - read
+          - read-rostering
+          - read-student-names
+          - read-student-profile-names
+      tags:
+        - users
+      summary: Get the user_id associated with the provided token.
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              id:
+                type: string
+  /users/{id}/email:
+    put:
+      operationId: updateUserEmail
+      security:
+        - oauth:
+          - read-write
+      tags:
+        - users
+      summary: Change the user's email address.
+      parameters:
+        - $ref: '#/parameters/id'
+        - in: formData
+          name: email
+          required: true
+          type: string
+        - in: formData
+          name: password
+          required: false
+          type: string
+      responses:
+        200:
+          description: OK
+  /users/{id}/password:
+    operationId: updateUserPassword
+    patch:
+      security:
+        - oauth:
+          - read-write
+      tags:
+        - users
+      summary: Change the user's password.
+      parameters:
+        - $ref: '#/parameters/id'
+        - in: formData
+          name: password
+          required: false
+          type: string
+        - in: formData
+          name: new_password
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+
 ################################################################################
 #                                 Definitions                                  #
 ################################################################################
