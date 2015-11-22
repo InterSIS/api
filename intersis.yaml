@@ -63,6 +63,24 @@ parameters:
     description: The resource identification string
     type: string
     required: true
+  staffId:
+    name: staffId
+    in: path
+    description: Staff resource identification string
+    required: true
+    type: string  
+  siteId:
+    name: siteId
+    in: path
+    description: Site resource identification string
+    required: true
+    type: string
+  sectionId:
+    name: sectionId
+    in: path
+    description: Section resource identification string
+    required: true
+    type: string
 
 ################################################################################
 #                                           Paths                              #
@@ -229,6 +247,199 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/Staff'
+    post:
+      operationId: addStaff
+      description: Create a staff object.
+      parameters:
+        - in: formData
+          name: family_names
+          description: The staff member's family name(s)
+          required: true
+          type: string
+        - in: formData
+          name: given_names
+          description: The staff member's given name(s)
+          required: true
+          type: string
+        - in: formData
+          name: email
+          description: The staff member's email address
+          required: false
+          type: string
+        - in: formData
+          name: hispanic_ethnicity
+          description: The staff member's hispanic ethnicity
+          required: false
+          type: boolean
+        - in: formData
+          name: sex
+          description: The staff member's sex
+          required: false
+          type: string
+          enum:
+            - female
+            - male
+        - in: formData
+          name: race
+          description: The staff member's race
+          required: false
+          type: string
+        - in: formData
+          name: role
+          type: string
+          required: true
+          description: The staff member's role in the organization.
+      security:
+        - oauth:
+          - read-write
+      tags:
+        - staff
+      responses:
+        200:
+          description: The staff object
+          schema:
+            $ref: '#/definitions/Staff'
+
+  /staff/{staffId}:
+    parameters:
+      - $ref: '#/parameters/staffId'
+    get:
+      security:
+        - oauth:
+          - read
+      tags:
+        - staff
+      description: Get basic information about a staff member.
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Staff'
+    patch:
+      operationId: updateStaff
+      description: Update a staff object.
+      parameters:
+        - in: formData
+          name: family_names
+          description: The staff member's family name(s)
+          required: false
+          type: string
+        - in: formData
+          name: given_names
+          description: The staff member' given name(s)
+          required: false
+          type: string
+        - in: formData
+          name: email
+          description: The staff member's email address
+          required: false
+          type: string
+        - in: formData
+          name: hispanic_ethnicity
+          description: The staff member's hispanic ethnicity
+          required: false
+          type: boolean
+        - in: formData
+          name: sex
+          description: The staff member's sex
+          required: false
+          type: string
+          enum:
+            - female
+            - male
+        - in: formData
+          name: race
+          description: The staff member's race
+          required: false
+          type: string
+      security:
+        - oauth:
+          - read-write
+      tags:
+        - staff
+      responses:
+        200:
+          description: The staff object
+          schema:
+            $ref: '#/definitions/Staff'
+    delete:
+      tags:
+        - staff
+      summary: Deletes a staff member
+      description: ""
+      operationId: deleteStaff
+      responses:
+        204:
+          description: Staff deleted
+      security:
+        - oauth:
+          - read-write
+  
+  /staff/{staffId}/sections/{sectionId}:
+    parameters: 
+      - $ref: '#/parameters/staffId'
+      - $ref: '#/parameters/sectionId'
+    put:
+      tags:
+        - staff
+        - sections
+      summary: Associates a staff member with a class section.
+      description: ""
+      operationId: staffAddSection
+      responses:
+        200:
+          description: A section object
+          schema:
+            $ref: '#/definitions/Section'
+      security:
+        - oauth:
+          - read-write
+    delete:
+      tags:
+        - staff
+        - sections
+      summary: Ends the association between a staff member and a class section.
+      description: ""
+      operationId: staffRemoveSection
+      responses:
+        204:
+          description: Association deleted
+      security:
+        - oauth:
+          - read-write
+
+  /staff/{staffId}/sites/{siteId}:
+    parameters:
+      - $ref: '#/parameters/staffId'
+      - $ref: '#/parameters/siteId'
+    put:
+      tags:
+        - staff
+        - sites
+      summary: Associates a staff member with a site.
+      description: ""
+      operationId: staffAddSite
+      responses:
+        200:
+          description: A site object
+          schema:
+            $ref: '#/definitions/Site'
+      security:
+        - oauth:
+          - read-write
+    delete:
+      tags:
+        - staff
+        - sites
+      summary: Ends the association between a staff member and a site.
+      description: ""
+      operationId: staffRemoveSite
+      responses:
+        204:
+          description: Association deleted
+      security:
+        - oauth:
+          - read-write
 
 ################################################################################
 #                                 Definitions                                  #
