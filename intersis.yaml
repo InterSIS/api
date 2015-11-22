@@ -11,6 +11,10 @@ info:
     Description of the InterSIS API
 
     This description can cover multiple lines.
+    
+    ```
+    And you can put Markdown in here!
+    ```
 
 ################################################################################
 #                  Host, Base Path, Schemes and Content Types                  #
