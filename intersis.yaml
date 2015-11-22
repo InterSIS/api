@@ -909,7 +909,64 @@ definitions:
         type: string
       username:
         type: string
+      email:
+        type: string
+        
+  #errors
   
+  UnrecognizedID:
+    required:
+      - error
+    properties:
+      error:
+        type: object
+        required:
+          - httpStatus
+          - requestedID
+          - dateTime
+        properties:
+          httpStatus:
+            type: integer
+            description: 404 for unrecognizedID
+          dateTime:
+            type: string
+            description: ISO format timestamp of the request
+          requestedID:
+            type: string
+            description: The ID not recognized
+          errorMessage:
+            type: string
+            description: (if provided) additional error information
+
+  Error:
+    required:
+      - error
+    properties:
+      error:
+        type: object
+        required:
+          - httpStatus
+          - dateTime
+        properties:
+          httpStatus:
+            type: integer
+            description: http status code of bad request
+          dateTime:
+            type: string
+            description: ISO format timestamp of the request
+          requestParameters:
+            type: array
+            description: parameters of the bad request
+            items:
+              type: array
+              items:
+                type: string
+          errorMessage:
+            type: string
+            description: (if provided) additional error information
+
+  # enums
+
   states:
     type: string
     enum:
