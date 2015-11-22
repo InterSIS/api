@@ -408,7 +408,6 @@ paths:
     put:
       tags:
         - staff
-        - sections
       summary: Associates a staff member with a class section.
       description: ""
       operationId: staffAddSection
@@ -423,7 +422,6 @@ paths:
     delete:
       tags:
         - staff
-        - sections
       summary: Ends the association between a staff member and a class section.
       description: ""
       operationId: staffRemoveSection
@@ -441,7 +439,6 @@ paths:
     put:
       tags:
         - staff
-        - sites
       summary: Associates a staff member with a site.
       description: ""
       operationId: staffAddSite
@@ -456,7 +453,6 @@ paths:
     delete:
       tags:
         - staff
-        - sites
       summary: Ends the association between a staff member and a site.
       description: ""
       operationId: staffRemoveSite
