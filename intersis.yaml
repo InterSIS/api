@@ -86,6 +86,29 @@ parameters:
 #                                           Paths                              #
 ################################################################################
 paths:
+  /clients:
+    post:
+      operationId: registerClient
+      summary: Register an OAuth client
+      description: Registers your OAuth client with the InterSIS instance.
+      parameters:
+        - in: formData
+          name: redirect_uris
+          description: Allowed URIs list, space separated
+          required: true
+          type: string
+        - in: formData
+          name: name
+          description: A unique name for your client
+          required: true
+          type: string
+      tags:
+        - clients
+      responses:
+        200:
+          description: The client object
+          schema:
+            $ref: '#/definitions/Client'
   /guardians:
     get:
       security:
@@ -557,6 +580,20 @@ paths:
 #                                 Definitions                                  #
 ################################################################################
 definitions:
+  Client:
+    properties:
+      id:
+        type: string
+      redirect_uris:
+        type: string
+      client_type:
+        type: string
+      authorization_grant_type:
+        type: string
+      client_secret:
+        type: string
+      name:
+        type: string
   Person:
     properties:
       id:
