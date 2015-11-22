@@ -114,33 +114,26 @@ paths:
           description: OK - The client object
           schema:
             $ref: '#/definitions/Client'
+<<<<<<< HEAD
 
   /courses:
       get:
-        operationId: listCourses
-        tags:
-          - courses
-        summary: List Course objects
-        description: List all courses available to you.
         security:
           - oauth:
             - read-rostering
+        tags:
+          - courses
+        description: List all course objects available to you.
         responses:
-          200:
-            description: OK - list of Course objects
+          "200":
+            description: successful operation
             schema:
               type: array
               items:
                 $ref: "#/definitions/Course"
       post:
         operationId: addCourse
-        tags:
-          - courses
-        summary: Create Course object
-        description: Create a new course.
-        security:
-          - oauth:
-            - read-write
+        description: Create a course object.
         parameters:
           - in: formData
             name: name
@@ -157,56 +150,35 @@ paths:
             description: The guardian's email address
             required: true
             type: string
+        security:
+          - oauth:
+            - read-write
+        tags:
+          - courses
         responses:
-          201:
-            description: Successfully created - The course object
+          200:
+            description: The course object
             schema:
               $ref: '#/definitions/Course'
-          409:
-            description: Cannot create - Course already exists
-            schema:
-              type: array
-              items:
-                $ref: '#/definitions/Course'
-          default:
-            description: Unexpected error
-            schema:
-              $ref: '#/definitions/Error'
 
   /courses/{id}:
     parameters:
       - $ref: '#/parameters/id'
     get:
-      operationId: detailCourse
-      tags:
-        - courses
-      summary: Get Course detail
-      description: Get detail information about a course.
       security:
         - oauth:
           - read-rostering
-      responses:
-        200:
-          description: OK - Course details
-          schema:
-            $ref: '#/definitions/Course'
-        404:
-          description: Unrecognized ID
-          schema:
-            $ref: '#/definitions/UnrecognizedID'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    patch:
-      operationId: updateCourse
       tags:
         - courses
-      summary: Update Course object
-      description: Update information about a course.
-      security:
-        - oauth:
-          - read-write
+      description: Get basic information about a course.
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Course'
+    patch:
+      operationId: updateCourse
+      description: Update a course object.
       parameters:
         - in: formData
           name: name
@@ -223,44 +195,38 @@ paths:
           description: The guardian's email address
           required: false
           type: string
-      responses:
-        200:
-          description: Successfully udpated - The guardian object
-          schema:
-            $ref: '#/definitions/Guardian'
-        404:
-          description: Unrecognized ID
-          schema:
-            $ref: '#/definitions/UnrecognizedID'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    delete:
-      operationId: deleteCourse
-      tags:
-        - courses
-      summary: Deletes Course object.
-      description: Deletes a course.
       security:
         - oauth:
           - read-write
+      tags:
+        - courses
       responses:
         200:
-          description: Course deleted - List of remaining courses
+          description: The guardian object
+          schema:
+            $ref: '#/definitions/Guardian'
+    delete:
+      tags:
+        - courses
+      summary: Deletes a course
+      description: ""
+      operationId: deleteCourse
+      parameters:
+        - $ref: '#/parameters/id'
+      responses:
+        "204":
+          description: Course deleted
           schema:
           type: array
           items:
             $ref: "#/definitions/Course"
-        404:
-          description: Unrecognized ID
-          schema:
-            $ref: '#/definitions/UnrecognizedID'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
+      security:
+        - oauth:
+          - read-write
 
+=======
+            
+>>>>>>> Big ol' formatting / standardizing update. Standard: operationID; tags; summary; description; security; parameters; response.  Standard: summary is speaking DB (objects/associations) and description is speaking human (assign, remove, person).  Standard: lowest-permissible security setting.  Standard: error-handling included in spec.
   /guardians:
     get:
       operationId: listGuardians
