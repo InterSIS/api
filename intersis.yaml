@@ -1085,11 +1085,11 @@ definitions:
         sites:
           type: array
           items:
-            $ref: '#/definitions/Site'
+            $ref: '#/definitions/Reference'
         sections:
           type: array
           items:
-            $ref: '#/definitions/Section'
+            $ref: '#/definitions/Reference'
 
   Guardian:
     description: Model of a guardian
