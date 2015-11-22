@@ -577,6 +577,7 @@ paths:
           - read-write
 
   /users:
+    operationId: identifyUser
     get:
       security:
         - oauth:
@@ -597,6 +598,7 @@ paths:
                 type: string
   /users/{id}/email:
     put:
+      operationId: updateUserEmail
       security:
         - oauth:
           - read-write
@@ -617,6 +619,7 @@ paths:
         200:
           description: OK
   /users/{id}/password:
+    operationId: updateUserPassword
     patch:
       security:
         - oauth:
