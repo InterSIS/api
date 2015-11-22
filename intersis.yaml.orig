@@ -114,6 +114,7 @@ paths:
           description: OK - The client object
           schema:
             $ref: '#/definitions/Client'
+<<<<<<< HEAD
 
   /courses:
       get:
@@ -223,6 +224,9 @@ paths:
         - oauth:
           - read-write
 
+=======
+            
+>>>>>>> Big ol' formatting / standardizing update. Standard: operationID; tags; summary; description; security; parameters; response.  Standard: summary is speaking DB (objects/associations) and description is speaking human (assign, remove, person).  Standard: lowest-permissible security setting.  Standard: error-handling included in spec.
   /guardians:
     get:
       operationId: listGuardians
