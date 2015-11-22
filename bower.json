@@ -1,0 +1,9 @@
+{
+  "name": "InterSIS API",
+  "version": "0.7",
+  "devDependencies": {
+    "qunit": "~1.19",
+    "qunit-phantomjs-runner" : "~2.1",
+    "swagger-parser": "~3.3"
+  }
+}
