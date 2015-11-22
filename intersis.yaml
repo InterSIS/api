@@ -113,6 +113,115 @@ paths:
           description: The client object
           schema:
             $ref: '#/definitions/Client'
+
+  /courses:
+      get:
+        security:
+          - oauth:
+            - read-rostering
+        tags:
+          - courses
+        description: List all course objects available to you.
+        responses:
+          "200":
+            description: successful operation
+            schema:
+              type: array
+              items:
+                $ref: "#/definitions/Course"
+      post:
+        operationId: addCourse
+        description: Create a course object.
+        parameters:
+          - in: formData
+            name: name
+            description: The name of the course
+            required: true
+            type: string
+          - in: formData
+            name: short_description
+            description: The guardians given name(s)
+            required: true
+            type: string
+          - in: formData
+            name: long_description
+            description: The guardian's email address
+            required: true
+            type: string
+        security:
+          - oauth:
+            - read-write
+        tags:
+          - courses
+        responses:
+          200:
+            description: The course object
+            schema:
+              $ref: '#/definitions/Course'
+
+  /courses/{id}:
+    parameters:
+      - $ref: '#/parameters/id'
+    get:
+      security:
+        - oauth:
+          - read-rostering
+      tags:
+        - courses
+      description: Get basic information about a course.
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Course'
+    patch:
+      operationId: updateCourse
+      description: Update a course object.
+      parameters:
+        - in: formData
+          name: name
+          description: The name of the course
+          required: false
+          type: string
+        - in: formData
+          name: short_description
+          description: The guardians given name(s)
+          required: false
+          type: string
+        - in: formData
+          name: long_description
+          description: The guardian's email address
+          required: false
+          type: string
+      security:
+        - oauth:
+          - read-write
+      tags:
+        - courses
+      responses:
+        200:
+          description: The guardian object
+          schema:
+            $ref: '#/definitions/Guardian'
+    delete:
+      tags:
+        - courses
+      summary: Deletes a course
+      description: ""
+      operationId: deleteCourse
+      parameters:
+        - $ref: '#/parameters/id'
+      responses:
+        "204":
+          description: Course deleted
+          schema:
+          type: array
+          items:
+            $ref: "#/definitions/Course"
+      security:
+        - oauth:
+          - read-write
+
   /guardians:
     get:
       security:
@@ -733,6 +842,17 @@ definitions:
           type: array
           items:
             $ref: '#/definitions/Reference'
+
+  Course:
+    description: Model of a course
+    type: object
+    properties:
+      name:
+        type: string
+      short_description:
+        type: string
+      long_description:
+        type: string
         
   Site:
     type: object
