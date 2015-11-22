@@ -4,6 +4,7 @@
   "devDependencies": {
     "qunit": "~1.19",
     "qunit-phantomjs-runner" : "~2.1",
-    "swagger-parser": "~3.3"
+    "swagger-parser": "~3.3",
+    "swagger-ui": "~2.1"
   }
 }
