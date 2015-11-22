@@ -231,7 +231,6 @@ paths:
     get:
       security:
         - oauth:
-          - read-write
           - read
           - read-rostering
       tags:
@@ -440,6 +439,119 @@ paths:
       security:
         - oauth:
           - read-write
+  /students:
+    get:
+      security:
+        - oauth:
+          - read
+          - read-rostering
+      tags:
+        - students
+      description: List all student objects available to you.
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Student'
+    post:
+      operationId: addStudent
+      description: Create a student object.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Student'
+      security:
+        - oauth:
+          - read-write
+      tags:
+        - students
+      responses:
+        200:
+          description: The student object
+          schema:
+            $ref: '#/definitions/Student'
+
+  /student/{id}:
+    parameters:
+      - $ref: '#/parameters/id'
+    get:
+      security:
+        - oauth:
+          - read
+      tags:
+        - student
+      description: Get basic information about a student.
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Student'
+    patch:
+      operationId: updateStudent
+      description: Update a student object.
+      parameters:
+        - in: formData
+          name: family_names
+          description: The student's family name(s)
+          required: false
+          type: string
+        - in: formData
+          name: given_names
+          description: The student's given name(s)
+          required: false
+          type: string
+        - in: formData
+          name: email
+          description: The student's email address
+          required: false
+          type: string
+        - in: formData
+          name: hispanic_ethnicity
+          description: The student's hispanic ethnicity
+          required: false
+          type: boolean
+        - in: formData
+          name: sex
+          description: The student's sex
+          required: false
+          type: string
+          enum:
+            - female
+            - male
+        - in: formData
+          name: race
+          description: The student's race
+          required: false
+          type: string
+      security:
+        - oauth:
+          - read-write
+      tags:
+        - student
+      responses:
+        200:
+          description: The student object
+          schema:
+            $ref: '#/definitions/Student'
+    delete:
+      tags:
+        - student
+      summary: Deletes a student
+      description: ""
+      operationId: deleteStudent
+      responses:
+        204:
+          description: Student
+      security:
+        - oauth:
+          - read-write
 
 ################################################################################
 #                                 Definitions                                  #
@@ -469,6 +581,7 @@ definitions:
       user:
         type: object
         $ref: '#/definitions/User'
+
   Student:
     description: Model of a student
     allOf:
@@ -491,6 +604,7 @@ definitions:
           type: array
           items:
             $ref: '#/definitions/Guardian'
+
   Staff:
     description: Model of a staff member
     allOf:
@@ -506,6 +620,7 @@ definitions:
           type: array
           items:
             $ref: '#/definitions/Section'
+
   Guardian:
     description: Model of a guardian
     allOf:
@@ -534,26 +649,42 @@ definitions:
         $ref: '#/definitions/states'
       postal_code:
         type: string
+
   Reference:
     type: object
     properties:
       uri:
         type: string
+
+  Course:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+
   Section:
+    type: object
     description: A course section
     properties:
-      user_name:
-        type: string
-      full_name:
-        type: string
       id:
-        type: integer
-      profile_picture:
         type: string
+      section_name:
+        type: string
+      course:
+        $ref: '#/definitions/Course'
+      students:
+        type: array
+        items:
+          $ref: '#/definitions/Reference'
+
   User:
     description: A user
     properties:
       id:
+        type: string
+      username:
         type: string
   
   states:
