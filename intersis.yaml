@@ -446,109 +446,146 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-
+  /sections/{section_id}/staff:
+    get:
+      operationId: sectionListStaff
+      tags:
+        - sections
+      summary: Lists all Staff associated with Section
+      description: Retrieves a list of all staff associated with a section
+      security:
+        - oauth:
+          - read-rostering
+      parameters:
+        - $ref: '#/parameters/path/sectionId'
+      responses:
+        200:
+          description: OK - list of Staff objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Staff"
   /sections/{section_id}/staff/{staff_id}:
-      put:
-        operationId: sectionAddStaff
-        tags:
-          - sections
-        summary: Associates Staff with Section
-        description: Assigns a staff member to the section
-        security:
-          - oauth:
-            - read-write
-        parameters:
-          - $ref: '#/parameters/path/sectionId'
-          - $ref: '#/parameters/path/staffId'
-        responses:
-          201:
-            description: Successfully associated - The section object
-            schema:
-              $ref: '#/definitions/Section'
-          404:
-            description: Unrecognized ID
-            schema:
-              $ref: '#/definitions/UnrecognizedID'
-          default:
-            description: Unexpected error
-            schema:
-              $ref: '#/definitions/Error'
-      delete:
-        operationId: sectionRemoveStaff
-        tags:
-          - sections
-        summary: Disassociate Staff from Section
-        description: Removes a staff member from the section
-        security:
-          - oauth:
-            - read-write
-        parameters:
-          - $ref: '#/parameters/path/sectionId'
-          - $ref: '#/parameters/path/staffId'
-        responses:
-          200:
-            description: Successfully removed - The section object
-            schema:
-              $ref: '#/definitions/Section'
-          404:
-            description: Unrecognized ID
-            schema:
-              $ref: '#/definitions/UnrecognizedID'
-          default:
-            description: Unexpected error
-            schema:
-              $ref: '#/definitions/Error'
+    put:
+      operationId: sectionAddStaff
+      tags:
+        - sections
+      summary: Associates Staff with Section
+      description: Assigns a staff member to the section
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/sectionId'
+        - $ref: '#/parameters/path/staffId'
+      responses:
+        201:
+          description: Successfully associated - The section object
+          schema:
+            $ref: '#/definitions/Section'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: sectionRemoveStaff
+      tags:
+        - sections
+      summary: Disassociate Staff from Section
+      description: Removes a staff member from the section
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/sectionId'
+        - $ref: '#/parameters/path/staffId'
+      responses:
+        200:
+          description: Successfully removed - The section object
+          schema:
+            $ref: '#/definitions/Section'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /sections/{section_id}/student:
+    get:
+      operationId: sectionListStudent
+      tags:
+        - sections
+      summary: Lists all Students associated with Section
+      description: Retrieves a list of all students associated with a section
+      security:
+        - oauth:
+          - read-rostering
+      parameters:
+        - $ref: '#/parameters/path/sectionId'
+      responses:
+        200:
+          description: OK - list of Student objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Student"
   /sections/{section_id}/student/{student_id}:
-        put:
-          operationId: sectionAddStudent
-          tags:
-            - sections
-          summary: Associates Student with Section
-          description: Assigns a student to the section
-          security:
-            - oauth:
-              - read-write
-          parameters:
-            - $ref: '#/parameters/path/sectionId'
-            - $ref: '#/parameters/path/studentId'
-          responses:
-            201:
-              description: Successfully associated - The section object
-              schema:
-                $ref: '#/definitions/Section'
-            404:
-              description: Unrecognized ID
-              schema:
-                $ref: '#/definitions/UnrecognizedID'
-            default:
-              description: Unexpected error
-              schema:
-                $ref: '#/definitions/Error'
-        delete:
-          operationId: sectionRemoveStudent
-          tags:
-            - sections
-          summary: Disassociate Student from Section
-          description: Removes a student from the section
-          security:
-            - oauth:
-              - read-write
-          parameters:
-            - $ref: '#/parameters/path/sectionId'
-            - $ref: '#/parameters/path/studentId'
-          responses:
-            200:
-              description: Successfully removed - The section object
-              schema:
-                $ref: '#/definitions/Section'
-            404:
-              description: Unrecognized ID
-              schema:
-                $ref: '#/definitions/UnrecognizedID'
-            default:
-              description: Unexpected error
-              schema:
-                $ref: '#/definitions/Error'
+    put:
+      operationId: sectionAddStudent
+      tags:
+        - sections
+      summary: Associates Student with Section
+      description: Assigns a student to the section
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/sectionId'
+        - $ref: '#/parameters/path/studentId'
+      responses:
+        201:
+          description: Successfully associated - The section object
+          schema:
+            $ref: '#/definitions/Section'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: sectionRemoveStudent
+      tags:
+        - sections
+      summary: Disassociate Student from Section
+      description: Removes a student from the section
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/sectionId'
+        - $ref: '#/parameters/path/studentId'
+      responses:
+        200:
+          description: Successfully removed - The section object
+          schema:
+            $ref: '#/definitions/Section'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 
   /guardians:
     get:
@@ -911,7 +948,25 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  
+  /staff/{staff_id}/sections:
+      get:
+        operationId: staffListSections
+        tags:
+          - staff
+        summary: Lists all Sections associated with Staff
+        description: Retrieves a list of all sections associated with a staff
+        security:
+          - oauth:
+            - read
+        parameters:
+          - $ref: '#/parameters/path/staffId'
+        responses:
+          200:
+            description: OK - list of Section objects
+            schema:
+              type: array
+              items:
+                $ref: "#/definitions/Section"
   /staff/{staff_id}/sections/{section_id}:
     parameters: 
       - $ref: '#/parameters/path/staffId'
@@ -960,7 +1015,25 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-
+  /staff/{staff_id}/sites:
+    get:
+      operationId: staffListSites
+      tags:
+        - staff
+      summary: Lists all Sites associated with Staff
+      description: Retrieves a list of all sites associated with a staff
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/staffId'
+      responses:
+        200:
+          description: OK - list of Site objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Site"
   /staff/{staff_id}/sites/{site_id}:
     parameters:
       - $ref: '#/parameters/path/staffId'
