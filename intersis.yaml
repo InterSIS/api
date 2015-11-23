@@ -61,6 +61,7 @@ security:
 ################################################################################
 #                                   Parameters                                 #
 ################################################################################
+
 parameters:
   id:
     name: id
@@ -86,10 +87,103 @@ parameters:
     description: Section resource identification string
     required: true
     type: string
+  path:
+    staffId:
+      name: staff_id
+      in: path
+      description: Staff resource identification string
+      required: true
+      type: string
+    studentId:
+      name: student_id
+      in: path
+      description: Student resource identification string
+      required: true
+      type: string
+    siteId:
+      name: site_id
+      in: path
+      description: Site resource identification string
+      required: true
+      type: string
+    sectionId:
+      name: section_id
+      in: path
+      description: Section resource identification string
+      required: true
+      type: string
+    courseId:
+      name: course_id
+      in: path
+      description: Course resource identification string
+      required: true
+      type: string
+
+#                                   Relations                              #
+  relations:
+    site:
+      required:
+        in: formData
+        name: site_id
+        description: The id of the site
+        required: true
+        type: string
+    course:
+      required:
+        in: formData
+        name: course_id
+        description: The id of the course
+        required: true
+        type: string
+#                                   Courses                                #
+  courses:
+    name:
+      required:
+        in: formData
+        name: name
+        description: The name of the course
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: name
+        description: The name of the course
+        required: false
+        type: string
+    shortDescription:
+      required:
+        in: formData
+        name: short_description
+        description: The course's short description
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: short_description
+        description: The course's short description
+        required: false
+        type: string
+    longDescription:
+      required:
+        in: formData
+        name: long_description
+        description: The course's long description.
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: long_description
+        description: The course's long description.
+        required: false
+        type: string
+
+
 
 ################################################################################
 #                                           Paths                              #
 ################################################################################
+
+
 paths:
   /clients:
     post:
@@ -114,7 +208,6 @@ paths:
           description: OK - The client object
           schema:
             $ref: '#/definitions/Client'
-
   /courses:
       get:
         operationId: listCourses
@@ -142,21 +235,9 @@ paths:
           - oauth:
             - read-write
         parameters:
-          - in: formData
-            name: name
-            description: The name of the course
-            required: true
-            type: string
-          - in: formData
-            name: short_description
-            description: The course's short description
-            required: true
-            type: string
-          - in: formData
-            name: long_description
-            description: The course's long description.
-            required: true
-            type: string
+          - $ref: '#/parameters/courses/name/required'
+          - $ref: '#/parameters/courses/shortDescription/required'
+          - $ref: '#/parameters/courses/longDescription/required'
         responses:
           201:
             description: Successfully created - The course object
@@ -172,10 +253,7 @@ paths:
             description: Unexpected error
             schema:
               $ref: '#/definitions/Error'
-
-  /courses/{id}:
-    parameters:
-      - $ref: '#/parameters/id'
+  /courses/{course_id}:
     get:
       operationId: detailCourse
       tags:
@@ -185,6 +263,8 @@ paths:
       security:
         - oauth:
           - read-rostering
+      parameters:
+        - $ref: '#/parameters/path/courseId'
       responses:
         200:
           description: OK - Course details
@@ -208,21 +288,10 @@ paths:
         - oauth:
           - read-write
       parameters:
-        - in: formData
-          name: name
-          description: The name of the course
-          required: false
-          type: string
-        - in: formData
-          name: short_description
-          description: The course's short description
-          required: false
-          type: string
-        - in: formData
-          name: long_description
-          description: The course's long description
-          required: false
-          type: string
+        - $ref: '#/parameters/path/courseId'
+        - $ref: '#/parameters/courses/name/unrequired'
+        - $ref: '#/parameters/courses/shortDescription/unrequired'
+        - $ref: '#/parameters/courses/longDescription/unrequired'
       responses:
         200:
           description: Successfully udpated - The course object
@@ -245,6 +314,8 @@ paths:
       security:
         - oauth:
           - read-write
+      parameters:
+        - $ref: '#/parameters/path/courseId'
       responses:
         200:
           description: Course deleted - List of remaining courses
@@ -260,6 +331,230 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+
+  /sections:
+    get:
+      operationId: listSections
+      tags:
+        - sections
+      summary: List Section objects
+      description: List all sections available to you.
+      security:
+        - oauth:
+          - read-rostering
+      responses:
+        200:
+          description: OK - list of Section objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Section"
+    post:
+      operationId: addSection
+      tags:
+        - sections
+      summary: Create Section object
+      description: Create a new section.
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/relations/site/required'
+        - $ref: '#/parameters/relations/course/required'
+      responses:
+        201:
+          description: Successfully created - The section object
+          schema:
+            $ref: '#/definitions/Section'
+        409:
+          description: Cannot create - Section already exists
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Section'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /sections/{section_id}:
+    get:
+      operationId: detailSection
+      tags:
+        - sections
+      summary: Get Section detail
+      description: Get detail information about a section.
+      security:
+        - oauth:
+          - read-rostering
+      responses:
+        200:
+          description: OK - Section details
+          schema:
+            $ref: '#/definitions/Section'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    patch:
+      operationId: updateSection
+      tags:
+        - sections
+      summary: Update Section object
+      description: Update information about a section.
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/courseId'
+        - $ref: '#/parameters/relations/site/required'
+        - $ref: '#/parameters/relations/course/required'
+      responses:
+        200:
+          description: Successfully udpated - The section object
+          schema:
+            $ref: '#/definitions/Section'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: deleteSection
+      tags:
+        - sections
+      summary: Deletes Section object.
+      description: Deletes a section.
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/courseId'
+      responses:
+        200:
+          description: Section deleted - List of remaining sections
+          schema:
+          type: array
+          items:
+            $ref: '#/definitions/Section'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /sections/{sectionId}/staff/{staffId}:
+      put:
+        operationId: sectionAddStaff
+        tags:
+          - sections
+        summary: Associates Staff with Section
+        description: Assigns a staff member to the section
+        security:
+          - oauth:
+            - read-write
+        parameters:
+          - $ref: '#/parameters/path/sectionId'
+          - $ref: '#/parameters/path/staffId'
+        responses:
+          201:
+            description: Successfully associated - The section object
+            schema:
+              $ref: '#/definitions/Section'
+          404:
+            description: Unrecognized ID
+            schema:
+              $ref: '#/definitions/UnrecognizedID'
+          default:
+            description: Unexpected error
+            schema:
+              $ref: '#/definitions/Error'
+      delete:
+        operationId: sectionRemoveStaff
+        tags:
+          - sections
+        summary: Disassociate Staff from Section
+        description: Removes a staff member from the section
+        security:
+          - oauth:
+            - read-write
+        parameters:
+          - $ref: '#/parameters/path/sectionId'
+          - $ref: '#/parameters/path/staffId'
+        responses:
+          200:
+            description: Successfully removed - The section object
+            schema:
+              $ref: '#/definitions/Section'
+          404:
+            description: Unrecognized ID
+            schema:
+              $ref: '#/definitions/UnrecognizedID'
+          default:
+            description: Unexpected error
+            schema:
+              $ref: '#/definitions/Error'
+  /sections/{section_id}/student/{student_id}:
+        put:
+          operationId: sectionAddStudent
+          tags:
+            - sections
+          summary: Associates Student with Section
+          description: Assigns a student to the section
+          security:
+            - oauth:
+              - read-write
+          parameters:
+            - $ref: '#/parameters/path/sectionId'
+            - $ref: '#/parameters/path/studentId'
+          responses:
+            201:
+              description: Successfully associated - The section object
+              schema:
+                $ref: '#/definitions/Section'
+            404:
+              description: Unrecognized ID
+              schema:
+                $ref: '#/definitions/UnrecognizedID'
+            default:
+              description: Unexpected error
+              schema:
+                $ref: '#/definitions/Error'
+        delete:
+          operationId: sectionRemoveStudent
+          tags:
+            - sections
+          summary: Disassociate Student from Section
+          description: Removes a student from the section
+          security:
+            - oauth:
+              - read-write
+          parameters:
+            - $ref: '#/parameters/path/sectionId'
+            - $ref: '#/parameters/path/studentId'
+          responses:
+            200:
+              description: Successfully removed - The section object
+              schema:
+                $ref: '#/definitions/Section'
+            404:
+              description: Unrecognized ID
+              schema:
+                $ref: '#/definitions/UnrecognizedID'
+            default:
+              description: Unexpected error
+              schema:
+                $ref: '#/definitions/Error'
 
   /guardians:
     get:
@@ -1112,6 +1407,17 @@ definitions:
         type: string
       long_description:
         type: string
+
+  Section:
+      description: Model of a section
+      type: object
+      properties:
+        name:
+          type: string
+        short_description:
+          type: string
+        long_description:
+          type: string
         
   Site:
     type: object
@@ -1154,11 +1460,14 @@ definitions:
       section_name:
         type: string
       course:
-        $ref: '#/definitions/Course'
+        $ref: '#/definitions/Reference'
       students:
         type: array
         items:
           $ref: '#/definitions/Reference'
+      staff:
+        $ref: '#/definitions/Reference'
+
 
   User:
     description: A user
