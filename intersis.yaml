@@ -63,31 +63,14 @@ security:
 ################################################################################
 
 parameters:
-  id:
-    name: id
-    in: path
-    description: The resource identification string
-    type: string
-    required: true
-  staffId:
-    name: staffId
-    in: path
-    description: Staff resource identification string
-    required: true
-    type: string  
-  siteId:
-    name: siteId
-    in: path
-    description: Site resource identification string
-    required: true
-    type: string
-  sectionId:
-    name: sectionId
-    in: path
-    description: Section resource identification string
-    required: true
-    type: string
+#                                   Path Parameters                            #
   path:
+    userId:
+      name: user_id
+      in: path
+      description: User resource identification string
+      required: true
+      type: string
     staffId:
       name: staff_id
       in: path
@@ -98,6 +81,12 @@ parameters:
       name: student_id
       in: path
       description: Student resource identification string
+      required: true
+      type: string
+    guardianId:
+      name: guardian_id
+      in: path
+      description: Guardian resource identification string
       required: true
       type: string
     siteId:
@@ -118,7 +107,6 @@ parameters:
       description: Course resource identification string
       required: true
       type: string
-
 #                                   Relations                              #
   relations:
     site:
@@ -135,6 +123,7 @@ parameters:
         description: The id of the course
         required: true
         type: string
+#                                   Clients                               #
 #                                   Courses                                #
   courses:
     name:
@@ -176,6 +165,11 @@ parameters:
         description: The course's long description.
         required: false
         type: string
+#                                   Guardians                              #
+#                                   Sections                               #
+#                                   Staff                                  #
+#                                   Students                               #
+#                                   Users                                  #
 
 
 
@@ -453,7 +447,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  /sections/{sectionId}/staff/{staffId}:
+  /sections/{section_id}/staff/{staff_id}:
       put:
         operationId: sectionAddStaff
         tags:
@@ -631,9 +625,9 @@ paths:
           schema:
             $ref: '#/definitions/Error'
                 
-  /guardians/{id}:
+  /guardians/{guardian_id}:
     parameters:
-      - $ref: '#/parameters/id'
+      - $ref: '#/parameters/path/guardianId'
     get:
       operationId: detailGuardian
       tags:
@@ -719,7 +713,7 @@ paths:
         - oauth:
           - read-write
       parameters:
-        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/path/guardianId'
       responses:
         200:
           description: OK - Successfully deleted - List remaining guardians.
@@ -815,9 +809,9 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  /staff/{id}:
+  /staff/{staff_id}:
     parameters:
-      - $ref: '#/parameters/id'
+      - $ref: '#/parameters/path/staffId'
     get:
       operationId: detailStaff
       tags:
@@ -918,10 +912,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
   
-  /staff/{staffId}/sections/{sectionId}:
+  /staff/{staff_id}/sections/{section_id}:
     parameters: 
-      - $ref: '#/parameters/staffId'
-      - $ref: '#/parameters/sectionId'
+      - $ref: '#/parameters/path/staffId'
+      - $ref: '#/parameters/path/sectionId'
     put:
       operationId: staffAddSection
       tags:
@@ -967,10 +961,10 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  /staff/{staffId}/sites/{siteId}:
+  /staff/{staff_id}/sites/{site_id}:
     parameters:
-      - $ref: '#/parameters/staffId'
-      - $ref: '#/parameters/siteId'
+      - $ref: '#/parameters/path/staffId'
+      - $ref: '#/parameters/path/siteId'
     put:
       operationId: staffAddSite
       tags:
@@ -1088,9 +1082,9 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  /students/{id}:
+  /students/{student_id}:
     parameters:
-      - $ref: '#/parameters/id'
+      - $ref: '#/parameters/path/studentId'
     get:
       operationId: detailStudent
       tags:
@@ -1208,9 +1202,9 @@ paths:
               id:
                 type: string
 
-  /users/{id}/email:
+  /users/{user_id}/email:
     parameters:
-      - $ref: '#/parameters/id'
+      - $ref: '#/parameters/path/userId'
     patch:
       operationId: updateUserEmail
       tags:
@@ -1265,9 +1259,9 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  /users/{id}/password:
+  /users/{user_id}/password:
     parameters:
-      - $ref: '#/parameters/id'
+      - $ref: '#/parameters/path/userId'
     patch:
       operationId: updateUserPassword
       tags:
