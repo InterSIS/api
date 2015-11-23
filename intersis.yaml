@@ -123,7 +123,24 @@ parameters:
         description: The id of the course
         required: true
         type: string
-#                                   Clients                               #
+#                                   Clients                                #
+  clients:
+    redirect_uris:
+      required:
+        in: formData
+        name: redirect_uris
+        description: Allowed URIs list, space separated
+        required: true
+        type: array
+        items: string
+        collectionFormat: ssv
+    name:
+      required:
+        in: formData
+        name: name
+        description: A unique name for your client
+        required: true
+        type: string
 #                                   Courses                                #
   courses:
     name:
@@ -165,16 +182,301 @@ parameters:
         description: The course's long description.
         required: false
         type: string
-#                                   Guardians                              #
-#                                   Sections                               #
-#                                   Staff                                  #
-#                                   Students                               #
-#                                   Users                                  #
-
-
+#                                   Sections                                   #
+  sections:
+    section_name:
+      required:
+        in: formData
+        name: section_name
+        description: The name of the course section.
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: section_name
+        description: The name of the course section.
+        required: false
+        type: string
+#                                   Guardians                                  #
+  guardians:
+    family_names:
+      required:
+        in: formData
+        name: family_names
+        description: The guardian's family name(s)
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: family_names
+        description: The guradian's family name(s)
+        required: false
+        type: string
+    given_names:
+      required:
+        in: formData
+        name: given_names
+        description: The guardian's given name(s)
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: given_names
+        description: The guardian's given name(s)
+        required: false
+        type: string
+    email:
+      required:
+        in: formData
+        name: email
+        description: The guardian's email address
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: email
+        description: The guardian's email address
+        required: false
+        type: string
+    hispanic_ethnicity:
+      unrequired:
+        in: formData
+        name: hispanic_ethnicity
+        description: The guardian's hispanic_ethnicity
+        required: false
+        type: boolean
+    sex:
+      required:
+        in: formData
+        name: sex
+        description: The guardian's sex
+        required: true
+        type: string
+        enum:
+          - female
+          - male
+      unrequired:
+        in: formData
+        name: sex
+        description: The guardian's sex
+        required: false
+        type: string
+        enum:
+          - female
+          - male
+    race:
+      required:
+        in: formData
+        name: race
+        description: The guardian's race
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: race
+        description: The guardian's race
+        required: false
+        type: string
+#                                   Staff                                      #
+  staff:
+    role:
+      required:
+        in: formData
+        name: role
+        description: The staff member's role in the organization.
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: role
+        description: The staff member's role in the organization
+        required: false
+        type: string
+    family_names:
+      required:
+        in: formData
+        name: family_names
+        description: The staff member's family name(s)
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: family_names
+        description: The staff member's family name(s)
+        required: false
+        type: string
+    given_names:
+      required:
+        in: formData
+        name: given_names
+        description: The staff member's given name(s)
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: given_names
+        description: The staff member's given name(s)
+        required: false
+        type: string
+    email:
+      required:
+        in: formData
+        name: email
+        description: The staff member's email address
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: email
+        description: The staff member's email address
+        required: false
+        type: string
+    hispanic_ethnicity:
+      unrequired:
+        in: formData
+        name: hispanic_ethnicity
+        description: The staff member's hispanic ethnicity
+        required: false
+        type: boolean
+    sex:
+      required:
+        in: formData
+        name: sex
+        description: The staff member's sex
+        required: true
+        type: string
+        enum:
+          - female
+          - male
+      unrequired:
+        in: formData
+        name: sex
+        description: The staff member's sex
+        required: false
+        type: string
+        enum:
+          - female
+          - male
+    race:
+      unrequired:
+        in: formData
+        name: race
+        description: The staff member's race
+        required: false
+        type: string
+#                                   Students                                   #
+  students:
+    family_names:
+      required:
+        in: formData
+        name: family_names
+        description: The student's family name(s)
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: family_names
+        description: The student's family name(s)
+        required: false
+        type: string
+    given_names:
+      required:
+        in: formData
+        name: given_names
+        description: The student's given name(s)
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: given_names
+        description: The student's given name(s)
+        required: false
+        type: string
+    email:
+      required:
+        in: formData
+        name: email
+        description: The student's email address
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: email
+        description: The student's email address
+        required: false
+        type: string
+    hispanic_ethnicity:
+      unrequired:
+        in: formData
+        name: hispanic_ethnicity
+        description: The student's hispanic ethnicity
+        required: false
+        type: boolean
+    sex:
+      required:
+        in: formData
+        name: sex
+        description: The student's sex
+        required: true
+        type: string
+        enum:
+          - female
+          - male
+      unrequired:
+        in: formData
+        name: sex
+        description: The student's sex
+        required: false
+        type: string
+        enum:
+          - female
+          - male
+    race:
+      unrequired:
+        in: formData
+        name: race
+        description: The student's race
+        required: false
+        type: string
+      
+#                                   Users                                      #
+  users:
+    email:
+      required:
+        in: formData
+        name: email
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: email
+        required: false
+        type: string
+    password:
+      required:
+        in: formData
+        name: password
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: password
+        required: false
+        type: string
+    new_password:
+      required:
+        in: formData
+        name: new_password
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: new_password
+        required: false
+        type: string
 
 ################################################################################
-#                                           Paths                              #
+#                                    Paths                                     #
 ################################################################################
 
 
@@ -187,16 +489,8 @@ paths:
       tags:
         - clients
       parameters:
-        - in: formData
-          name: redirect_uris
-          description: Allowed URIs list, space separated
-          required: true
-          type: string
-        - in: formData
-          name: name
-          description: A unique name for your client
-          required: true
-          type: string
+        - $ref: '#/parameters/clients/redirect_uris/required'
+        - $ref: '#/parameters/clients/name/required'
       responses:
         200:
           description: OK - The client object
@@ -353,6 +647,7 @@ paths:
         - oauth:
           - read-write
       parameters:
+        - $ref: '#/parameters/sections/section_name/required'
         - $ref: '#/parameters/relations/site/required'
         - $ref: '#/parameters/relations/course/required'
       responses:
@@ -404,9 +699,10 @@ paths:
         - oauth:
           - read-write
       parameters:
-        - $ref: '#/parameters/path/courseId'
-        - $ref: '#/parameters/relations/site/required'
-        - $ref: '#/parameters/relations/course/required'
+        - $ref: '#/parameters/path/sectionId'
+        - $ref: '#/parameters/sections/section_name/unrequired'
+        - $ref: '#/parameters/relations/site/unrequired'
+        - $ref: '#/parameters/relations/course/unrequired'
       responses:
         200:
           description: Successfully udpated - The section object
@@ -617,39 +913,12 @@ paths:
         - oauth:
           - read-write
       parameters:
-        - in: formData
-          name: family_names
-          description: The guardian's family name(s)
-          required: true
-          type: string
-        - in: formData
-          name: given_names
-          description: The guardians given name(s)
-          required: true
-          type: string
-        - in: formData
-          name: email
-          description: The guardian's email address
-          required: false
-          type: string
-        - in: formData
-          name: hispanic_ethnicity
-          description: The guardian's hispanic ethnicity
-          required: false
-          type: boolean
-        - in: formData
-          name: sex
-          description: The guardian's sex
-          required: false
-          type: string
-          enum:
-            - female
-            - male
-        - in: formData
-          name: race
-          description: The guardian's race
-          required: false
-          type: string
+        - $ref: '#/parameters/guardians/family_names/required'
+        - $ref: '#/parameters/guardians/given_names/required'
+        - $ref: '#/parameters/guardians/email/unrequired'
+        - $ref: '#/parameters/guardians/hispanic_ethnicity/unrequired'
+        - $ref: '#/parameters/guardians/sex/required'
+        - $ref: '#/parameters/guardians/race/unrequired'
       responses:
         201:
           description: Successfully created - The guardian object
@@ -663,8 +932,6 @@ paths:
             $ref: '#/definitions/Error'
                 
   /guardians/{guardian_id}:
-    parameters:
-      - $ref: '#/parameters/path/guardianId'
     get:
       operationId: detailGuardian
       tags:
@@ -674,6 +941,8 @@ paths:
       security:
         - oauth:
           - read
+      parameters:
+        - $ref: '#/parameters/path/guardianId'
       responses:
         200:
           description: OK - The guardian object
@@ -693,39 +962,13 @@ paths:
         - oauth:
           - read-write
       parameters:
-        - in: formData
-          name: family_names
-          description: The guardian's family name(s)
-          required: false
-          type: string
-        - in: formData
-          name: given_names
-          description: The guardians given name(s)
-          required: false
-          type: string
-        - in: formData
-          name: email
-          description: The guardian's email address
-          required: false
-          type: string
-        - in: formData
-          name: hispanic_ethnicity
-          description: The guardian's hispanic ethnicity
-          required: false
-          type: boolean
-        - in: formData
-          name: sex
-          description: The guardian's sex
-          required: false
-          type: string
-          enum:
-            - female
-            - male
-        - in: formData
-          name: race
-          description: The guardian's race
-          required: false
-          type: string
+        - $ref: '#/parameters/path/guardianId'
+        - $ref: '#/parameters/guardians/family_names/unrequired'
+        - $ref: '#/parameters/guardians/given_names/unrequired'
+        - $ref: '#/parameters/guardians/email/unrequired'
+        - $ref: '#/parameters/guardians/hispanic_ethnicity/unrequired'
+        - $ref: '#/parameters/guardians/sex/unrequired'
+        - $ref: '#/parameters/guardians/race/unrequired'
       responses:
         200:
           description: OK - The guardian object
@@ -796,44 +1039,13 @@ paths:
         - oauth:
           - read-write
       parameters:
-        - in: formData
-          name: role
-          type: string
-          required: true
-          description: The staff member's role in the organization.
-        - in: formData
-          name: family_names
-          description: The staff member's family name(s)
-          required: true
-          type: string
-        - in: formData
-          name: given_names
-          description: The staff member's given name(s)
-          required: true
-          type: string
-        - in: formData
-          name: email
-          description: The staff member's email address
-          required: false
-          type: string
-        - in: formData
-          name: hispanic_ethnicity
-          description: The staff member's hispanic ethnicity
-          required: false
-          type: boolean
-        - in: formData
-          name: sex
-          description: The staff member's sex
-          required: false
-          type: string
-          enum:
-            - female
-            - male
-        - in: formData
-          name: race
-          description: The staff member's race
-          required: false
-          type: string
+        - $ref: '#/parameters/staff/role/required'
+        - $ref: '#/parameters/staff/family_names/required'
+        - $ref: '#/parameters/staff/given_names/required'
+        - $ref: '#/parameters/staff/email/unrequired'
+        - $ref: '#/parameters/staff/hispanic_ethnicity/unrequired'
+        - $ref: '#/parameters/staff/sex/required'
+        - $ref: '#/parameters/staff/race/unrequired'
       responses:
         201:
           description: Successfully created - The staff object
@@ -847,8 +1059,6 @@ paths:
             $ref: '#/definitions/Error'
 
   /staff/{staff_id}:
-    parameters:
-      - $ref: '#/parameters/path/staffId'
     get:
       operationId: detailStaff
       tags:
@@ -858,6 +1068,8 @@ paths:
       security:
         - oauth:
           - read
+      parameters:
+        - $ref: '#/parameters/path/staffId'
       responses:
         200:
           description: OK - Staff details
@@ -877,39 +1089,14 @@ paths:
         - oauth:
           - read-write
       parameters:
-        - in: formData
-          name: family_names
-          description: The staff member's family name(s)
-          required: false
-          type: string
-        - in: formData
-          name: given_names
-          description: The staff member' given name(s)
-          required: false
-          type: string
-        - in: formData
-          name: email
-          description: The staff member's email address
-          required: false
-          type: string
-        - in: formData
-          name: hispanic_ethnicity
-          description: The staff member's hispanic ethnicity
-          required: false
-          type: boolean
-        - in: formData
-          name: sex
-          description: The staff member's sex
-          required: false
-          type: string
-          enum:
-            - female
-            - male
-        - in: formData
-          name: race
-          description: The staff member's race
-          required: false
-          type: string
+        - $ref: '#/parameters/path/staffId'
+        - $ref: '#/parameters/staff/role/unrequired'
+        - $ref: '#/parameters/staff/family_names/unrequired'
+        - $ref: '#/parameters/staff/given_names/unrequired'
+        - $ref: '#/parameters/staff/email/unrequired'
+        - $ref: '#/parameters/staff/hispanic_ethnicity/unrequired'
+        - $ref: '#/parameters/staff/sex/unrequired'
+        - $ref: '#/parameters/staff/race/unrequired'
       responses:
         200:
           description: OK - The staff object
@@ -933,6 +1120,8 @@ paths:
       security:
         - oauth:
           - read-write
+      parameters:
+        - $ref: '#/parameters/path/staffId'
       responses:
         200:
           description: Successfully deleted - list remaining staff
@@ -967,10 +1156,11 @@ paths:
               type: array
               items:
                 $ref: "#/definitions/Section"
+          404:
+            description: Unrecognized ID
+            schema:
+              $ref: '#/definitions/UnrecognizedID'
   /staff/{staff_id}/sections/{section_id}:
-    parameters: 
-      - $ref: '#/parameters/path/staffId'
-      - $ref: '#/parameters/path/sectionId'
     put:
       operationId: staffAddSection
       tags:
@@ -980,6 +1170,9 @@ paths:
       security:
         - oauth:
           - read-write
+      parameters:
+        - $ref: '#/parameters/path/staffId'
+        - $ref: '#/parameters/path/sectionId'
       responses:
         201:
           description: Successfully associated - The staff object
@@ -1002,6 +1195,9 @@ paths:
       security:
         - oauth:
           - read-write
+      parameters:
+        - $ref: '#/parameters/path/staffId'
+        - $ref: '#/parameters/path/sectionId'
       responses:
         200:
           description: Successfully removed - The staff object
@@ -1035,9 +1231,6 @@ paths:
             items:
               $ref: "#/definitions/Site"
   /staff/{staff_id}/sites/{site_id}:
-    parameters:
-      - $ref: '#/parameters/path/staffId'
-      - $ref: '#/parameters/path/siteId'
     put:
       operationId: staffAddSite
       tags:
@@ -1047,6 +1240,9 @@ paths:
       security:
         - oauth:
           - read-write
+      parameters:
+        - $ref: '#/parameters/path/staffId'
+        - $ref: '#/parameters/path/siteId'
       responses:
         201:
           description: Successfully associated - the staff object
@@ -1069,6 +1265,9 @@ paths:
       security:
         - oauth:
           - read-write
+      parameters:
+        - $ref: '#/parameters/path/staffId'
+        - $ref: '#/parameters/path/siteId'
       responses:
         200:
           description: Successfully removed - The staff object
@@ -1110,39 +1309,12 @@ paths:
         - oauth:
           - read-write
       parameters:
-        - in: formData
-          name: family_names
-          description: The student's family name(s)
-          required: false
-          type: string
-        - in: formData
-          name: given_names
-          description: The student's given name(s)
-          required: false
-          type: string
-        - in: formData
-          name: email
-          description: The student's email address
-          required: false
-          type: string
-        - in: formData
-          name: hispanic_ethnicity
-          description: The student's hispanic ethnicity
-          required: false
-          type: boolean
-        - in: formData
-          name: sex
-          description: The student's sex
-          required: false
-          type: string
-          enum:
-            - female
-            - male
-        - in: formData
-          name: race
-          description: The student's race
-          required: false
-          type: string
+        - $ref: '#/parameters/students/family_names/required'
+        - $ref: '#/parameters/students/given_names/required'
+        - $ref: '#/parameters/students/email/unrequired'
+        - $ref: '#/parameters/students/hispanic_ethnicity/unrequired'
+        - $ref: '#/parameters/students/sex/required'
+        - $ref: '#/parameters/students/race/unrequired'
       responses:
         201:
           description: Successfully created - The student object
@@ -1150,14 +1322,14 @@ paths:
             $ref: '#/definitions/Student'
         409:
           description: Conflict - Student object already exists
+          schema:
+            $ref: '#/definitions/Student'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
 
   /students/{student_id}:
-    parameters:
-      - $ref: '#/parameters/path/studentId'
     get:
       operationId: detailStudent
       tags:
@@ -1167,6 +1339,8 @@ paths:
       security:
         - oauth:
           - read
+      parameters:
+        - $ref: '#/parameters/path/studentId'
       responses:
         200:
           description: OK - The Student object
@@ -1186,39 +1360,13 @@ paths:
         - oauth:
           - read-write
       parameters:
-        - in: formData
-          name: family_names
-          description: The student's family name(s)
-          required: false
-          type: string
-        - in: formData
-          name: given_names
-          description: The student's given name(s)
-          required: false
-          type: string
-        - in: formData
-          name: email
-          description: The student's email address
-          required: false
-          type: string
-        - in: formData
-          name: hispanic_ethnicity
-          description: The student's hispanic ethnicity
-          required: false
-          type: boolean
-        - in: formData
-          name: sex
-          description: The student's sex
-          required: false
-          type: string
-          enum:
-            - female
-            - male
-        - in: formData
-          name: race
-          description: The student's race
-          required: false
-          type: string
+        - $ref: '#/parameters/path/studentId'
+        - $ref: '#/parameters/students/family_names/unrequired'
+        - $ref: '#/parameters/students/given_names/unrequired'
+        - $ref: '#/parameters/students/email/unrequired'
+        - $ref: '#/parameters/students/hispanic_ethnicity/unrequired'
+        - $ref: '#/parameters/students/sex/unrequired'
+        - $ref: '#/parameters/students/race/unrequired'
       responses:
         200:
           description: Successfully updated - The student object
@@ -1241,6 +1389,8 @@ paths:
       security:
         - oauth:
           - read-write
+      parameters:
+        - $ref: '#/parameters/path/studentId'
       responses:
         200:
           description: Successfully deleted - List of remaining student objects
@@ -1276,8 +1426,6 @@ paths:
                 type: string
 
   /users/{user_id}/email:
-    parameters:
-      - $ref: '#/parameters/path/userId'
     patch:
       operationId: updateUserEmail
       tags:
@@ -1288,14 +1436,9 @@ paths:
         - oauth:
           - read-write
       parameters:
-        - in: formData
-          name: email
-          required: true
-          type: string
-        - in: formData
-          name: password
-          required: false
-          type: string
+        - $ref: '#/parameters/path/userId'
+        - $ref: '#/parameters/users/email/unrequired'
+        - $ref: '#/parameters/users/password/unrequired'
       responses:
         200:
           description: OK - the User object
@@ -1318,6 +1461,8 @@ paths:
       security:
         - oauth:
           - read-write
+      parameters:
+        - $ref: '#/parameters/path/userId'
       responses:
         200:
           description: User email removed - the User object
@@ -1333,8 +1478,6 @@ paths:
             $ref: '#/definitions/Error'
 
   /users/{user_id}/password:
-    parameters:
-      - $ref: '#/parameters/path/userId'
     patch:
       operationId: updateUserPassword
       tags:
@@ -1345,14 +1488,9 @@ paths:
         - oauth:
           - read-write
       parameters:
-        - in: formData
-          name: password
-          required: false
-          type: string
-        - in: formData
-          name: new_password
-          required: true
-          type: string
+        - $ref: '#/parameters/path/userId'
+        - $ref: '#/parameters/users/password/unrequired'
+        - $ref: '#/parameters/users/new_password/required'
       responses:
         200:
           description: OK - the User object
@@ -1474,17 +1612,6 @@ definitions:
         type: string
       long_description:
         type: string
-
-  Section:
-      description: Model of a section
-      type: object
-      properties:
-        name:
-          type: string
-        short_description:
-          type: string
-        long_description:
-          type: string
         
   Site:
     type: object
