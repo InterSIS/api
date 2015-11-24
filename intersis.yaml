@@ -116,12 +116,24 @@ parameters:
         description: The id of the site
         required: true
         type: string
+      unrequired:
+        in: formData
+        name: site_id
+        description: The id of the site
+        required: false
+        type: string
     course:
       required:
         in: formData
         name: course_id
         description: The id of the course
         required: true
+        type: string
+      unrequired:
+        in: formData
+        name: course_id
+        description: The id of the course
+        required: false
         type: string
 #                                   Clients                                #
   clients:
@@ -689,6 +701,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+
     patch:
       operationId: updateSection
       tags:
@@ -930,7 +943,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-                
+
   /guardians/{guardian_id}:
     get:
       operationId: detailGuardian
@@ -1009,7 +1022,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-            
+
   /staff:
     get:
       tags:
@@ -1509,9 +1522,9 @@ paths:
 #                                 Definitions                                  #
 ################################################################################
 definitions:
-  
+
   # Models
-  
+
   Client:
     properties:
       id:
@@ -1612,7 +1625,7 @@ definitions:
         type: string
       long_description:
         type: string
-        
+
   Site:
     type: object
     properties:
@@ -1672,9 +1685,9 @@ definitions:
         type: string
       email:
         type: string
-        
+
   #errors
-  
+
   UnrecognizedID:
     required:
       - error
