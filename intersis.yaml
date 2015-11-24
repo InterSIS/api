@@ -2419,13 +2419,15 @@ paths:
           schema:
             $ref: '#/definitions/Error'
   
-  /users:
+  /whoami:
     get:
       operationId: identifyUser
       tags:
-        - users
-      summary: Get user_id for token
-      description: Get the user ID associated with a provided token.
+        - whoami
+      summary: Get identifying user information
+      description: |
+        Get the user ID associated with a provided token, as well as any staff, student or guardian associated with
+        the user.
       security:
         - oauth:
           - read-client
@@ -2436,86 +2438,13 @@ paths:
             properties:
               id:
                 type: string
+              staff:
+                $ref: '#/definitions/Reference'
+              student:
+                $ref: '#/definitions/Reference'
+              guardian:
+                $ref: '#/definitions/Reference'
 
-  /users/{user_id}/email:
-    patch:
-      operationId: updateUserEmail
-      tags:
-        - users
-      summary: Change User email.
-      description: Change the email address associated with a given user.
-      security:
-        - oauth:
-          - read-write
-      parameters:
-        - $ref: '#/parameters/path/userId'
-        - $ref: '#/parameters/users/email/unrequired'
-        - $ref: '#/parameters/users/password/unrequired'
-      responses:
-        200:
-          description: OK - the User object
-          schema:
-            $ref: '#/definitions/User'
-        404:
-          description: Unrecognized ID
-          schema:
-            $ref: '#/definitions/UnrecognizedID'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    delete:
-      operationId: removeUserEmail
-      tags:
-        - users
-      summary: Remove User email
-      description: Remove the email address for a given user.
-      security:
-        - oauth:
-          - read-write
-      parameters:
-        - $ref: '#/parameters/path/userId'
-      responses:
-        200:
-          description: User email removed - the User object
-          schema:
-            $ref: '#/definitions/User'
-        404:
-          description: Unrecognized ID
-          schema:
-            $ref: '#/definitions/UnrecognizedID'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-
-  /users/{user_id}/password:
-    patch:
-      operationId: updateUserPassword
-      tags:
-        - users
-      summary: Change User password
-      description: Change the password for a given user.
-      security:
-        - oauth:
-          - read-write
-      parameters:
-        - $ref: '#/parameters/path/userId'
-        - $ref: '#/parameters/users/password/unrequired'
-        - $ref: '#/parameters/users/new_password/required'
-      responses:
-        200:
-          description: OK - the User object
-          schema:
-            $ref: '#/definitions/User'
-        404:
-          description: Unrecognized ID
-          schema:
-            $ref: '#/definitions/UnrecognizedID'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
 
 ################################################################################
 #                                 Definitions                                  #
@@ -2795,17 +2724,6 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Reference'
-
-  User:
-    description: A user
-    properties:
-      id:
-        type: string
-        example: t6y4zo26vutj4xclh5hpy3sc5m
-      username:
-        type: string
-      email:
-        type: string
 
   #errors
 
