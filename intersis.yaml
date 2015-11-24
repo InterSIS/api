@@ -289,6 +289,68 @@ parameters:
         description: The guardian's race
         required: false
         type: string
+#                                   Sites                                      #
+  sites:
+    name:
+      required:
+        in: formData
+        name: name
+        description: The site name
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: name
+        description: The site name
+        required: false
+        type: string
+    address_line_1:
+      required:
+        in: formData
+        name: address_line_1
+        description: The site's street address (line 1)
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: address_line_1
+        description: The site's street address (line 1)
+        required: false
+        type: string
+    address_line_2:
+      unrequired:
+        in: formData
+        name: address_line_2
+        description: The site's street address (line 2)
+        required: false
+        type: string
+    city:
+      required:
+        in: formData
+        name: city
+        description: The site's city
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: city
+        description: The site's city
+        required: false
+        type: string
+    postal_code:
+      required:
+        in: formData
+        name: postal_code
+        description: The site's postal code
+        required: true
+        type: string
+      unrequired:
+        in: formData
+        name: postal_code
+        description: The site's postal code
+        required: false
+        type: string
+
 #                                   Staff                                      #
   staff:
     role:
@@ -553,6 +615,7 @@ paths:
             description: Unexpected error
             schema:
               $ref: '#/definitions/Error'
+
   /courses/{course_id}:
     get:
       operationId: detailCourse
@@ -631,6 +694,83 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  
+  /courses/{course_id}/sections:
+    get:
+      operationId: courseListSections
+      tags:
+        - courses
+      summary: Lists all Sections of a Course
+      description: |
+        Retrieves a list of all class sections teaching a given course
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/courseId'
+      responses:
+        200:
+          description: OK - list of Section objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Section"
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+  
+  /courses/{course_id}/sections/{section_id}:
+    put:
+      operationId: courseAddSection
+      tags:
+        - courses
+      summary: Adds a Section to a Course
+      description: Adds a new class section to a given course
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/courseId'
+        - $ref: '#/parameters/path/sectionId'
+      responses:
+        201:
+          description: Successfully associated - The course object
+          schema:
+            $ref: '#/definitions/Course'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: courseRemoveSection
+      tags:
+        - courses
+      summary: Removes Section from Course
+      description: Removes a class section from the course
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/courseId'
+        - $ref: '#/parameters/path/sectionId'
+      responses:
+        200:
+          description: Successfully removed - The course object
+          schema:
+            $ref: '#/definitions/Course'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 
   /sections:
     get:
@@ -688,6 +828,8 @@ paths:
       security:
         - oauth:
           - read-rostering
+      parameters:
+        - $ref: '#/parameters/path/sectionId'
       responses:
         200:
           description: OK - Section details
@@ -755,6 +897,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+
   /sections/{section_id}/staff:
     get:
       operationId: sectionListStaff
@@ -774,6 +917,7 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Staff"
+
   /sections/{section_id}/staff/{staff_id}:
     put:
       operationId: sectionAddStaff
@@ -825,9 +969,10 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+
   /sections/{section_id}/student:
     get:
-      operationId: sectionListStudent
+      operationId: sectionListStudents
       tags:
         - sections
       summary: Lists all Students associated with Section
@@ -844,6 +989,7 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Student"
+
   /sections/{section_id}/student/{student_id}:
     put:
       operationId: sectionAddStudent
@@ -882,6 +1028,81 @@ paths:
       parameters:
         - $ref: '#/parameters/path/sectionId'
         - $ref: '#/parameters/path/studentId'
+      responses:
+        200:
+          description: Successfully removed - The section object
+          schema:
+            $ref: '#/definitions/Section'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /sections/{section_id}/course:
+    get:
+      operationId: sectionGetCourse
+      tags:
+        - sections
+      summary: Retrieves Course associated with Section
+      description: |
+        Retrieves the course associated with a given class section
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/sectionId'
+      responses:
+        200:
+          description: OK - Course object
+          schema:
+            $ref: "#/definitions/Course"
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+  
+  /sections/{section_id}/courses/{course_id}:
+    put:
+      operationId: sectionAddCourse
+      tags:
+        - sections
+      summary: Sets Course for Section
+      description: Sets the course for a given class section
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/sectionId'
+        - $ref: '#/parameters/path/courseId'
+      responses:
+        201:
+          description: Successfully associated - The section object
+          schema:
+            $ref: '#/definitions/Section'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: sectionRemoveCourse
+      tags:
+        - sections
+      summary: Unsets Course for Section
+      description: Removes the course set for a given class section
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/sectionId'
+        - $ref: '#/parameters/path/courseId'
       responses:
         200:
           description: Successfully removed - The section object
@@ -1023,6 +1244,368 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  /guardians/{guardian_id}/students:
+    get:
+      operationId: guardianListStudents
+      tags:
+        - guardians
+      summary: Lists all Students associated with this Guardian
+      description: |
+        Retrieves a list of all students associated with a guardian
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/guardianId'
+      responses:
+        200:
+          description: OK - list of Student objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Student"
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+  
+  /guardians/{guardian_id}/students/{student_id}:
+    put:
+      operationId: guardianAddStudent
+      tags:
+        - guardians
+      summary: Associates Student with the Guardian
+      description: Adds a student to the guardian's list
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/guardianId'
+        - $ref: '#/parameters/path/studentId'
+      responses:
+        201:
+          description: Successfully associated - The Guardian object
+          schema:
+            $ref: '#/definitions/Guardian'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: guardianRemoveStudent
+      tags:
+        - guardians
+      summary: Disassociate Student from Guardian
+      description: Removes a student from the guardian's list
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/guardianId'
+        - $ref: '#/parameters/path/studentId'
+      responses:
+        200:
+          description: Successfully removed - The Guardian object
+          schema:
+            $ref: '#/definitions/Guardian'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /sites:
+    get:
+      operationId: listSites
+      tags:
+        - sites
+      summary: List site objects
+      description: List all site objects available to you.
+      security:
+        - oauth:
+          - read-rostering
+      responses:
+        200:
+          description: OK - List of site objects
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Site'
+        204:
+          description: No Content - No site objects available
+    post:
+      operationId: addSite
+      tags:
+        - sites
+      summary: Create site
+      description: Create a new site object
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/sites/name/required'
+        - $ref: '#/parameters/sites/address_line_1/unrequired'
+        - $ref: '#/parameters/sites/address_line_2/unrequired'
+        - $ref: '#/parameters/sites/city/unrequired'
+        - $ref: '#/definitions/states'
+        - $ref: '#/parameters/sites/postal_code/unrequired'
+      responses:
+        201:
+          description: Successfully created - the Site object
+          schema:
+            $ref: '#/definitions/Site'
+        409:
+          description: Cannot create - Site already exists
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Site'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /sites/{site_id}:
+    get:
+      operationId: detailSite
+      tags:
+        - sites
+      summary: Get Site detail
+      description: Get detail information about a Site
+      security:
+        - oauth:
+          - read-rostering
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+      responses:
+        200:
+          description: OK - Site details
+          schema:
+            $ref: '#/definitions/Site'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    patch:
+      operationId: updateSite
+      tags:
+        - sites
+      summary: Update Site object
+      description: Update information about a site.
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+        - $ref: '#/parameters/sites/name/unrequired'
+        - $ref: '#/parameters/sites/address_line_1/unrequired'
+        - $ref: '#/parameters/sites/address_line_2/unrequired'
+        - $ref: '#/parameters/sites/city/unrequired'
+        - $ref: '#/definitions/states'
+      responses:
+        200:
+          description: Successfully udpated - The site object
+          schema:
+            $ref: '#/definitions/Site'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      tags:
+        - sites
+      operationId: deleteSite
+      summary: Delete site
+      description: Deletes a site object.
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+      responses:
+        200:
+          description: Successfully deleted - list remaining sites
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Site'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /sites/{site_id}/staff:
+    get:
+      operationId: siteListStaff
+      tags:
+        - sites
+      summary: Lists all Staff associated with this Site
+      description: |
+        Retrieves a list of all staff members associated with a site
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+      responses:
+        200:
+          description: OK - list of Staff objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Staff"
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+  
+  /sites/{site_id}/staff/{staff_id}:
+    put:
+      operationId: siteAddStaff
+      tags:
+        - sites
+      summary: Associates Staff with Site
+      description: Assigns a staff member to the site
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+        - $ref: '#/parameters/path/staffId'
+      responses:
+        201:
+          description: Successfully associated - The site object
+          schema:
+            $ref: '#/definitions/Site'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: siteRemoveStaff
+      tags:
+        - sites
+      summary: Disassociate Staff from Site
+      description: Removes a staff member from the site
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+        - $ref: '#/parameters/path/staffId'
+      responses:
+        200:
+          description: Successfully removed - The site object
+          schema:
+            $ref: '#/definitions/Site'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /sites/{site_id}/students:
+    get:
+      operationId: siteListStudents
+      tags:
+        - sites
+      summary: Lists all Students associated with Site
+      description: Retrieves a list of all students associated with the site
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+      responses:
+        200:
+          description: OK - list of Student objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Student"
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+  
+  /sites/{site_id}/students/{student_id}:
+    put:
+      operationId: siteAddStudent
+      tags:
+        - sites
+      summary: Associates Student with Site
+      description: Assigns a student to the site
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+        - $ref: '#/parameters/path/studentId'
+      responses:
+        201:
+          description: Successfully associated - The site object
+          schema:
+            $ref: '#/definitions/Site'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: siteRemoveStudent
+      tags:
+        - sites
+      summary: Disassociate Student from Site
+      description: Removes a student from the site
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+        - $ref: '#/parameters/path/studentId'
+      responses:
+        200:
+          description: Successfully removed - The site object
+          schema:
+            $ref: '#/definitions/Site'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
   /staff:
     get:
       tags:
@@ -1129,7 +1712,6 @@ paths:
         - staff
       summary: Deletes a staff member
       description: Deletes a staff object.
-      operationId: deleteStaff
       security:
         - oauth:
           - read-write
@@ -1419,7 +2001,238 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  
+  /students/{student_id}/sites:
+    get:
+      operationId: studentListSites
+      tags:
+        - students
+      summary: Lists all Sites associated with this Student
+      description: |
+        Retrieves a list of all sites associated with a student
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+      responses:
+        200:
+          description: OK - list of Site objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Site"
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+  
+  /students/{student_id}/sites/{site_id}:
+    put:
+      operationId: studentAddSite
+      tags:
+        - students
+      summary: Associates Site with Student
+      description: Associates a site with this student
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+        - $ref: '#/parameters/path/siteId'
+      responses:
+        201:
+          description: Successfully associated - The student object
+          schema:
+            $ref: '#/definitions/Student'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: studentRemoveSite
+      tags:
+        - students
+      summary: Disassociate Site from Student
+      description: Disassociates a site from the student
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+        - $ref: '#/parameters/path/siteId'
+      responses:
+        200:
+          description: Successfully removed - The student object
+          schema:
+            $ref: '#/definitions/Student'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 
+  /students/{student_id}/sections:
+    get:
+      operationId: studentListSections
+      tags:
+        - students
+      summary: Lists all Sections associated with this Student
+      description: |
+        Retrieves a list of all class sections associated with a student
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+      responses:
+        200:
+          description: OK - list of Section objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Section"
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+  
+  /students/{student_id}/sections/{section_id}:
+    put:
+      operationId: studentAddSection
+      tags:
+        - students
+      summary: Associates Section with Student
+      description: Assigns a class section to the student
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+        - $ref: '#/parameters/path/sectionId'
+      responses:
+        201:
+          description: Successfully associated - The student object
+          schema:
+            $ref: '#/definitions/Student'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: studentRemoveSection
+      tags:
+        - students
+      summary: Disassociate Section from Student
+      description: Removes a class section from the student's list
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+        - $ref: '#/parameters/path/sectionId'
+      responses:
+        200:
+          description: Successfully removed - The student object
+          schema:
+            $ref: '#/definitions/Student'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /students/{student_id}/guardians:
+    get:
+      operationId: studentListGuardians
+      tags:
+        - students
+      summary: Lists all Guardians associated with this Student
+      description: |
+        Retrieves a list of all guardians associated with a student
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+      responses:
+        200:
+          description: OK - list of Guardian objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Guardian"
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+  
+  /students/{student_id}/guardians/{guardian_id}:
+    put:
+      operationId: studentAddGuardian
+      tags:
+        - students
+      summary: Associates Guardian with Student
+      description: Adds a guardian to the student's list
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+        - $ref: '#/parameters/path/guardianId'
+      responses:
+        201:
+          description: Successfully associated - The student object
+          schema:
+            $ref: '#/definitions/Student'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: studentRemoveGuardian
+      tags:
+        - students
+      summary: Disassociate Guardian from Student
+      description: Removes a guardian from the student's list
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+        - $ref: '#/parameters/path/guardianId'
+      responses:
+        200:
+          description: Successfully removed - The Student object
+          schema:
+            $ref: '#/definitions/Student'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
   /users:
     get:
       operationId: identifyUser
@@ -1526,11 +2339,20 @@ definitions:
   # Models
 
   Client:
+    description: The client accessing the API
+    type: object
+    required:
+      - id
+      - name
+      - redirect_uris
     properties:
       id:
         type: string
+        example: t6y4zo26vutj4xclh5hpy3sc5m
       redirect_uris:
-        type: string
+        type: array
+        items:
+          type: string
       client_type:
         type: string
       authorization_grant_type:
@@ -1539,19 +2361,54 @@ definitions:
         type: string
       name:
         type: string
-
-  Person:
+        
+  Course:
+    description: |
+      A Course (comprised of sections which are comprised of students)
+    type: object
+    required:
+      - id
+      - name
     properties:
       id:
         type: string
+        example: t6y4zo26vutj4xclh5hpy3sc5m
+      name:
+        type: string
+        example: Algebra I
+      short_description:
+        type: string
+        example: INM3 Algebra I at Example High
+      long_description:
+        type: string
+        example: |
+          Algebra I Course using Integrated New Math 3rd Edition Textbook at
+          Example High School
+
+  Student:
+    description: Model of a student
+    type: object
+    required:
+      - id
+      - family_names
+      - given_names
+      - sites
+    properties:
+      id:
+        type: string
+        example: t6y4zo26vutj4xclh5hpy3sc5m
       profile_name:
         type: string
+        example: johnsmith23
       family_names:
         type: string
+        example: Smith
       given_names:
         type: string
+        example: John
       email:
         type: string
+        example: john.smith@example.com
       hispanic_ethnicity:
         type: boolean
       sex:
@@ -1564,108 +2421,77 @@ definitions:
       user:
         type: object
         $ref: '#/definitions/User'
-
-  Student:
-    description: Model of a student
-    allOf:
-    - $ref: '#/definitions/Person'
-    - type: object
-      properties:
-        school_student_id:
-          type: string
-        state_student_id:
-          type: string
-        sites:
-          type: array
-          items:
-            $ref: '#/definitions/Site'
-        sections:
-          type: array
-          items:
-            $ref: '#/definitions/Section'
-        guardians:
-          type: array
-          items:
-            $ref: '#/definitions/Guardian'
-
-  Staff:
-    description: Model of a staff member
-    allOf:
-    - $ref: '#/definitions/Person'
-    - properties:
-        role:
-          type: string
-        sites:
-          type: array
-          items:
-            $ref: '#/definitions/Reference'
-        sections:
-          type: array
-          items:
-            $ref: '#/definitions/Reference'
+      school_student_id:
+        type: string
+      state_student_id:
+        type: string
+      sites:
+        type: array
+        items:
+          $ref: '#/definitions/Reference'
+      sections:
+        type: array
+        items:
+          $ref: '#/definitions/Reference'
+      guardians:
+        type: array
+        items:
+          $ref: '#/definitions/Reference'
 
   Guardian:
     description: Model of a guardian
-    allOf:
-    - $ref: '#/definitions/Person'
-    - type: object
-      properties:
+    type: object
+    required:
+      - id
+      - family_names
+      - given_names
+    properties:
+      id:
+        type: string
+        example: t6y4zo26vutj4xclh5hpy3sc5m
+      profile_name:
+        type: string
+        example: johnsmith23
+      family_names:
+        type: string
+        example: Smith
+      given_names:
+        type: string
+        example: John
+      email:
+        type: string
+        example: john.smith@example.com
+      hispanic_ethnicity:
+        type: boolean
+      sex:
+        type: string
+        enum:
+          - female
+          - male
+      race:
+        type: string
+      user:
+        type: object
+        $ref: '#/definitions/User'
         students:
           type: array
           items:
             $ref: '#/definitions/Reference'
 
-  Course:
-    description: Model of a course
-    type: object
-    properties:
-      name:
-        type: string
-      short_description:
-        type: string
-      long_description:
-        type: string
-
-  Site:
-    type: object
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-      address_line_1:
-        type: string
-      address_line_2:
-        type: string
-      city:
-        type: string
-      state:
-        $ref: '#/definitions/states'
-      postal_code:
-        type: string
-
-  Reference:
-    type: object
-    properties:
-      uri:
-        type: string
-
-  Course:
-    type: object
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-
   Section:
     type: object
     description: A course section
+    required:
+      - id
+      - name
+      - course
     properties:
       id:
         type: string
-      section_name:
+        example: t6y4zo26vutj4xclh5hpy3sc5m
+      name:
         type: string
+        example: Smith 1st Period Algebra I
       course:
         $ref: '#/definitions/Reference'
       students:
@@ -1675,12 +2501,96 @@ definitions:
       staff:
         $ref: '#/definitions/Reference'
 
+  Site:
+    description: A school, region, or facility
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: string
+        example: t6y4zo26vutj4xclh5hpy3sc5m
+      name:
+        type: string
+        example: Example High School
+      address_line_1:
+        type: string
+        example: 123 Main Street
+      address_line_2:
+        type: string
+        example: '#47b'
+      city:
+        type: string
+        example: Newtown
+      state:
+        $ref: '#/definitions/states'
+      postal_code:
+        type: string
+        example: 55555
+        
+  Staff:
+    description: Model of a staff member
+    type: object
+    required:
+      - id
+      - family_names
+      - given_names
+      - sites
+      - role
+    properties:
+      id:
+        type: string
+        example: t6y4zo26vutj4xclh5hpy3sc5m
+      profile_name:
+        type: string
+        example: johnsmith23
+      family_names:
+        type: string
+        example: Smith
+      given_names:
+        type: string
+        example: John
+      email:
+        type: string
+        example: john.smith@example.com
+      hispanic_ethnicity:
+        type: boolean
+      sex:
+        type: string
+        enum:
+          - female
+          - male
+      race:
+        type: string
+      user:
+        type: object
+        $ref: '#/definitions/User'
+      role:
+        type: string
+        example: Classroom teacher
+      sites:
+        type: array
+        items:
+          $ref: '#/definitions/Reference'
+      sections:
+        type: array
+        items:
+            $ref: '#/definitions/Reference'
+
+  Reference:
+    type: object
+    properties:
+      uri:
+        type: string
+        example: /api/objects/t6y4zo26vutj4xclh5hpy3sc5m
 
   User:
     description: A user
     properties:
       id:
         type: string
+        example: t6y4zo26vutj4xclh5hpy3sc5m
       username:
         type: string
       email:
@@ -1702,15 +2612,19 @@ definitions:
           httpStatus:
             type: integer
             description: 404 for unrecognizedID
+            example: 404
           dateTime:
             type: string
             description: ISO format timestamp of the request
+            example: 2015-09-14T09:45:19+00:00
           requestedID:
             type: string
             description: The ID not recognized
+            example: t6y4zo26vutj4xclh5hpy3sc5m
           errorMessage:
             type: string
             description: (if provided) additional error information
+            example: ID not found
 
   Error:
     required:
@@ -1725,9 +2639,11 @@ definitions:
           httpStatus:
             type: integer
             description: http status code of bad request
+            example: 501
           dateTime:
             type: string
             description: ISO format timestamp of the request
+            example: 2015-09-14T09:14:30+00:00
           requestParameters:
             type: array
             description: parameters of the bad request
@@ -1735,14 +2651,19 @@ definitions:
               type: array
               items:
                 type: string
+            example: '[[param1, 12345], [param2, 12354]]'
           errorMessage:
             type: string
             description: (if provided) additional error information
+            example: Bad request
 
   # enums
 
   states:
+    name: state
     type: string
+    description: State
+    in: formData
     enum:
       - AK
       - AL
@@ -1795,3 +2716,5 @@ definitions:
       - WI
       - WV
       - WY
+      
+  
