@@ -107,6 +107,12 @@ parameters:
       description: Course resource identification string
       required: true
       type: string
+    documentId:
+      name: document_id
+      in: path
+      description: Document resource identification string
+      required: true
+      type: string
 #                                   Relations                              #
   relations:
     site:
@@ -194,6 +200,47 @@ parameters:
         description: The course's long description.
         required: false
         type: string
+#                                   Documents                                  #
+  documents:
+    document:
+      required:
+        in: formData
+        type: file
+        name: document
+        description: the document being added
+        required: true
+      unrequired:
+        in: formData
+        type: file
+        name: document
+        description: the document file
+        required: false
+    description:
+      required:
+        in: formData
+        type: string
+        name: description
+        description: a short description of the document
+        required: true
+      unrequired:
+        in: formData
+        type: string
+        name: description
+        description: a short description of the document
+        required: false
+    document_type:
+      required:
+        in: formData
+        type: string
+        name: document_type
+        description: The category of document being uploaded
+        required: true
+      unrequired:
+        in: formData
+        type: string
+        name: document_type
+        description: The category of document
+        required: false
 #                                   Sections                                   #
   sections:
     section_name:
@@ -512,6 +559,13 @@ parameters:
         description: The student's race
         required: false
         type: string
+    picture:
+      unrequired:
+        in: formData
+        name: picture
+        description: The student's photo
+        required: false
+        type: file
       
 #                                   Users                                      #
   users:
@@ -1910,6 +1964,7 @@ paths:
         - $ref: '#/parameters/students/hispanic_ethnicity/unrequired'
         - $ref: '#/parameters/students/sex/required'
         - $ref: '#/parameters/students/race/unrequired'
+        - $ref: '#/parameters/students/picture/unrequired'
       responses:
         201:
           description: Successfully created - The student object
@@ -1962,6 +2017,7 @@ paths:
         - $ref: '#/parameters/students/hispanic_ethnicity/unrequired'
         - $ref: '#/parameters/students/sex/unrequired'
         - $ref: '#/parameters/students/race/unrequired'
+        - $ref: '#/parameters/students/picture/unrequired'
       responses:
         200:
           description: Successfully updated - The student object
@@ -2233,6 +2289,136 @@ paths:
           schema:
             $ref: '#/definitions/Error'
   
+  /students/{student_id}/documents:
+    get:
+      operationId: studentListDocuments
+      tags:
+        - students
+      summary: Get documents for student
+      description: Retrieve a list of stored documents for a given student.
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+      responses:
+        200:
+          description: OK - List of Document Objects
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Document'
+        204:
+          description: No documents found for student
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+    post:
+      operationId: studentAddDocument
+      tags:
+        - students
+      summary: Upload document for student
+      description: Upload a document associated with a student
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+        - $ref: '#/parameters/documents/document_type/required'
+        - $ref: '#/parameters/documents/description/required'
+        - $ref: '#/parameters/documents/document/required'
+      responses:
+        201:
+          description: OK Document uploaded - the document object
+          schema:
+            $ref: '#/definitions/Document'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /students/{student_id}/documents/{document_id}:
+    get:
+      operation: studentDetailDocument
+      tags:
+        - students
+      summary: Get student document
+      description: Retrieve a specific document associated with a student
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+        - $ref: '#/parameters/path/documentId'
+      responses:
+        200:
+          description: OK - the Document Object
+          schema:
+            $ref: '#/definitions/Document'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    patch:
+      operationId: studentUpdateDocument
+      tags:
+        - students
+      summary: Edit a student document
+      description: Edit details about a document associated with a student
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+        - $ref: '#/parameters/path/documentId'
+        - $ref: '#/parameters/documents/document_type/unrequired'
+        - $ref: '#/parameters/documents/description/unrequired'
+        - $ref: '#/parameters/documents/document/unrequired'
+      responses:
+        200:
+          description: OK Document updated - the Document object
+          schema:
+            $ref: '#/definitions/Document'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: studentDeleteDocument
+      tags:
+        - students
+      summary: Delete a student document
+      description: Delete a document associated with a student
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/studentId'
+        - $ref: '#/parameters/path/documentId'
+      responses:
+        200:
+          description: OK Document deleted - the Student object
+          schema:
+            $ref: '#/definitions/Student'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
   /users:
     get:
       operationId: identifyUser
@@ -2384,59 +2570,27 @@ definitions:
         example: |
           Algebra I Course using Integrated New Math 3rd Edition Textbook at
           Example High School
-
-  Student:
-    description: Model of a student
+  
+  Document:
+    description: A document file
     type: object
     required:
       - id
-      - family_names
-      - given_names
-      - sites
+      - url
     properties:
       id:
         type: string
         example: t6y4zo26vutj4xclh5hpy3sc5m
-      profile_name:
+      url:
         type: string
-        example: johnsmith23
-      family_names:
+        format: url
+        example: '/media/t6y4zo26vutj4xclh5hpy3sc5m/1044.pdf'
+      document_type:
         type: string
-        example: Smith
-      given_names:
+        example: "IEP"
+      description:
         type: string
-        example: John
-      email:
-        type: string
-        example: john.smith@example.com
-      hispanic_ethnicity:
-        type: boolean
-      sex:
-        type: string
-        enum:
-          - female
-          - male
-      race:
-        type: string
-      user:
-        type: object
-        $ref: '#/definitions/User'
-      school_student_id:
-        type: string
-      state_student_id:
-        type: string
-      sites:
-        type: array
-        items:
-          $ref: '#/definitions/Reference'
-      sections:
-        type: array
-        items:
-          $ref: '#/definitions/Reference'
-      guardians:
-        type: array
-        items:
-          $ref: '#/definitions/Reference'
+        example: "John Smith's IEP"
 
   Guardian:
     description: Model of a guardian
@@ -2477,6 +2631,13 @@ definitions:
           type: array
           items:
             $ref: '#/definitions/Reference'
+  
+  Reference:
+    type: object
+    properties:
+      uri:
+        type: string
+        example: /api/objects/t6y4zo26vutj4xclh5hpy3sc5m
 
   Section:
     type: object
@@ -2577,13 +2738,63 @@ definitions:
         type: array
         items:
             $ref: '#/definitions/Reference'
-
-  Reference:
+  
+  Student:
+    description: Model of a student
     type: object
+    required:
+      - id
+      - family_names
+      - given_names
+      - sites
     properties:
-      uri:
+      id:
         type: string
-        example: /api/objects/t6y4zo26vutj4xclh5hpy3sc5m
+        example: t6y4zo26vutj4xclh5hpy3sc5m
+      profile_name:
+        type: string
+        example: johnsmith23
+      family_names:
+        type: string
+        example: Smith
+      given_names:
+        type: string
+        example: John
+      email:
+        type: string
+        example: john.smith@example.com
+      hispanic_ethnicity:
+        type: boolean
+      sex:
+        type: string
+        enum:
+          - female
+          - male
+      race:
+        type: string
+      user:
+        type: object
+        $ref: '#/definitions/User'
+      picture:
+        type: string
+        format: url
+        example: '/media/t6y4zo26vutj4xclh5hpy3sc5m/photo.jpg'
+      school_student_id:
+        type: string
+      state_student_id:
+        type: string
+      sites:
+        type: array
+        items:
+          $ref: '#/definitions/Reference'
+      sections:
+        type: array
+        items:
+          $ref: '#/definitions/Reference'
+      guardians:
+        type: array
+        items:
+          $ref: '#/definitions/Reference'
 
   User:
     description: A user
