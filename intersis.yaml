@@ -2438,6 +2438,7 @@ paths:
             properties:
               id:
                 type: string
+                example: t6y4zo26vutj4xclh5hpy3sc5m
               staff:
                 $ref: '#/definitions/Reference'
               student:
