@@ -2672,6 +2672,8 @@ definitions:
         example: Smith 1st Period Algebra I
       course:
         $ref: '#/definitions/Reference'
+      site:
+        $ref: '#/definitions/Reference'
       students:
         type: array
         items:
