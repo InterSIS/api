@@ -8,13 +8,24 @@ info:
   version: v0.7
   title: Intersis API
   description: |
-    Description of the InterSIS API
 
-    This description can cover multiple lines.
-    
-    ```
-    And you can put Markdown in here!
-    ```
+    ## Introduction
+
+    ### What is InterSIS?
+
+    InterSIS is an API and a set of SDKs to help software developers and school districts hold student information in a single, secure place.
+
+    ## Authentication
+
+    ### Client Registration
+
+    Here's some information about client registration.
+
+    {{see #clients}}
+
+    ### Authentication Endpoints
+
+    {{see #whoami}}
 
 ################################################################################
 #                  Host, Base Path, Schemes and Content Types                  #
