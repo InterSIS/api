@@ -1293,6 +1293,83 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+            
+  /guardians/{guardian_id}/sites:
+    get:
+      operationId: guardianListSites
+      tags:
+        - guardians
+      summary: Lists all Sites associated with this Guardian
+      description: |
+        Retrieves a list of all sites associated with a guardian
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/guardianId'
+      responses:
+        200:
+          description: OK - list of Site objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Site"
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+  
+  /guardians/{guardian_id}/sites/{site_id}:
+    put:
+      operationId: guardianAddSite
+      tags:
+        - guardians
+      summary: Associates Site with the Guardian
+      description: Adds a site to the guardian's list
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/guardianId'
+        - $ref: '#/parameters/path/siteId'
+      responses:
+        201:
+          description: Successfully associated - The Guardian object
+          schema:
+            $ref: '#/definitions/Guardian'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: guardianRemoveSite
+      tags:
+        - guardians
+      summary: Disassociate Site from Guardian
+      description: Removes a site from the guardian's list
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/guardianId'
+        - $ref: '#/parameters/path/siteId'
+      responses:
+        200:
+          description: Successfully removed - The Guardian object
+          schema:
+            $ref: '#/definitions/Guardian'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   
   /sites:
     get:
@@ -1565,6 +1642,82 @@ paths:
       parameters:
         - $ref: '#/parameters/path/siteId'
         - $ref: '#/parameters/path/studentId'
+      responses:
+        200:
+          description: Successfully removed - The site object
+          schema:
+            $ref: '#/definitions/Site'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /sites/{site_id}/guardians:
+    get:
+      operationId: siteListGuardians
+      tags:
+        - sites
+      summary: Lists all Guardians associated with Site
+      description: Retrieves a list of all guardians associated with the site
+      security:
+        - oauth:
+          - read
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+      responses:
+        200:
+          description: OK - list of Guardian objects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Guardian"
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+
+  /sites/{site_id}/guardians/{guardian_id}:
+    put:
+      operationId: siteAddGuardian
+      tags:
+        - sites
+      summary: Associates Guardian with Site
+      description: Assigns a guardian to the site
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+        - $ref: '#/parameters/path/guardianId'
+      responses:
+        201:
+          description: Successfully associated - The site object
+          schema:
+            $ref: '#/definitions/Site'
+        404:
+          description: Unrecognized ID
+          schema:
+            $ref: '#/definitions/UnrecognizedID'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      operationId: siteRemoveGuardian
+      tags:
+        - sites
+      summary: Disassociate Guardian from Site
+      description: Removes a guardian from the site
+      security:
+        - oauth:
+          - read-write
+      parameters:
+        - $ref: '#/parameters/path/siteId'
+        - $ref: '#/parameters/path/guardianId'
       responses:
         200:
           description: Successfully removed - The site object
@@ -2476,10 +2629,14 @@ definitions:
       user:
         type: object
         $ref: '#/definitions/User'
-        students:
-          type: array
-          items:
-            $ref: '#/definitions/Reference'
+      students:
+        type: array
+        items:
+          $ref: '#/definitions/Reference'
+      sites:
+        type: array
+        items:
+          $ref: '#/definitions/Reference'
   
   Reference:
     type: object
