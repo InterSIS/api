@@ -773,58 +773,6 @@ paths:
           description: Unrecognized ID
           schema:
             $ref: '#/definitions/UnrecognizedID'
-  
-  /courses/{course_id}/sections/{section_id}:
-    put:
-      operationId: courseAddSection
-      tags:
-        - courses
-      summary: Adds a Section to a Course
-      description: Adds a new class section to a given course
-      security:
-        - oauth:
-          - read-write
-      parameters:
-        - $ref: '#/parameters/path/courseId'
-        - $ref: '#/parameters/path/sectionId'
-      responses:
-        201:
-          description: Successfully associated - The course object
-          schema:
-            $ref: '#/definitions/Course'
-        404:
-          description: Unrecognized ID
-          schema:
-            $ref: '#/definitions/UnrecognizedID'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    delete:
-      operationId: courseRemoveSection
-      tags:
-        - courses
-      summary: Removes Section from Course
-      description: Removes a class section from the course
-      security:
-        - oauth:
-          - read-write
-      parameters:
-        - $ref: '#/parameters/path/courseId'
-        - $ref: '#/parameters/path/sectionId'
-      responses:
-        200:
-          description: Successfully removed - The course object
-          schema:
-            $ref: '#/definitions/Course'
-        404:
-          description: Unrecognized ID
-          schema:
-            $ref: '#/definitions/UnrecognizedID'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
 
   /sections:
     get:
@@ -1118,58 +1066,29 @@ paths:
           description: Unrecognized ID
           schema:
             $ref: '#/definitions/UnrecognizedID'
-  
-  /sections/{section_id}/courses/{course_id}:
-    put:
-      operationId: sectionAddCourse
+            
+  /sections/{section_id}/site:
+    get:
+      operationId: sectionGetSite
       tags:
         - sections
-      summary: Sets Course for Section
-      description: Sets the course for a given class section
+      summary: Retrieves Site associated with Section
+      description: |
+        Retrieves the site associated with a given class section
       security:
         - oauth:
-          - read-write
+          - read
       parameters:
         - $ref: '#/parameters/path/sectionId'
-        - $ref: '#/parameters/path/courseId'
-      responses:
-        201:
-          description: Successfully associated - The section object
-          schema:
-            $ref: '#/definitions/Section'
-        404:
-          description: Unrecognized ID
-          schema:
-            $ref: '#/definitions/UnrecognizedID'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    delete:
-      operationId: sectionRemoveCourse
-      tags:
-        - sections
-      summary: Unsets Course for Section
-      description: Removes the course set for a given class section
-      security:
-        - oauth:
-          - read-write
-      parameters:
-        - $ref: '#/parameters/path/sectionId'
-        - $ref: '#/parameters/path/courseId'
       responses:
         200:
-          description: Successfully removed - The section object
+          description: OK - Site object
           schema:
-            $ref: '#/definitions/Section'
+            $ref: "#/definitions/Site"
         404:
           description: Unrecognized ID
           schema:
             $ref: '#/definitions/UnrecognizedID'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
 
   /guardians:
     get:
