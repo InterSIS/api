@@ -35,6 +35,20 @@ Use the {{see #tag}} to include a tag of API endpoint docs in the narrative docu
     {{see #clients}}
 ```
 
+### {{spec #tag}}
+
+Use the {{spec #tag}} to describe semantic requirements for the API:
+
+```
+    ### Client Registration
+    
+    See the following endpoints on client registration:
+    
+    {{see #clients}}
+    {{spec #students: the staff role of district administrator grants retrieve on all students.}}
+    {{spec #students: a guardian may retrieve only on those students with which it has the student-guardian relationship.}}
+```
+
 Development Process
 ===================
 
